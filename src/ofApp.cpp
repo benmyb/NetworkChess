@@ -177,7 +177,7 @@ void ofApp::keyPressed(int key){
 		}
 
 
-		else {
+		else if(chess_man.m_step==1) {
 			int disappear_chess(-1), show_chess(-1);
 			bool color;
 			chess_man.back(disappear_chess, show_chess, color);
