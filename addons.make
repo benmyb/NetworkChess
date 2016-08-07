@@ -1,0 +1,4 @@
+ofxAssimpModelLoader
+ofxFontStash-master
+ofxUI-master
+ofxXmlSettings
