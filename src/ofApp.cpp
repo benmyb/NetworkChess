@@ -177,7 +177,13 @@ void ofApp::keyPressed(int key){
 		}
 
 
-	//	else if()
+		else {
+			int disappear_chess(-1), show_chess(-1);
+			bool color;
+			chess_man.back(disappear_chess, show_chess, color);
+			curr_board[teni2eighti(disappear_chess)] = 0;
+			pre_chess = -1;
+		}
 		break;
 	}
 	case OF_KEY_HOME: {
