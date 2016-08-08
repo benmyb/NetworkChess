@@ -130,7 +130,7 @@ void ofApp::keyPressed(int key){
 	}
 	case 'j': {
 		success_path.clear();
-		if (chess_man.judge_network(0)) {  //black?
+		if (chess_man.judge_network(0)) {  
 			while (!(chess_man.m_success.empty())) {
 				success_path.addVertex(chess[teni2eighti(chess_man.m_success.top())].getPosition());
 				chess_man.m_success.pop();
