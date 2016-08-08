@@ -148,7 +148,7 @@ void ofApp::keyPressed(int key) {
 		if (chess_man.m_step>1) {
 			int disappear_chess(-1), show_chess(-1);
 			bool color;
-			if (!chess_man.back(disappear_chess, show_chess, color)) {	//??????
+			if (!chess_man.back(disappear_chess, show_chess, color)) {	
 
 
 				if (disappear_chess != -1 && show_chess != -1) {
@@ -156,7 +156,7 @@ void ofApp::keyPressed(int key) {
 					pre_chess = teni2eighti(show_chess);
 				}
 			}
-			else {	//??????
+			else {	
 				curr_board[teni2eighti(disappear_chess)] = 0;
 
 
