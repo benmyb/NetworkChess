@@ -1,7 +1,7 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofApp::setup() {
+void ofApp::setup(){
 	ofDisableArbTex();
 	srand((unsigned)time(NULL));
 	mCam.begin();
@@ -64,7 +64,7 @@ void ofApp::setup() {
 }
 
 //--------------------------------------------------------------
-void ofApp::update() {
+void ofApp::update(){
 	if (curr_mode == BEGIN) {
 		mCam.begin();
 		mCam.rotateAround(0.1, ofVec3f(ofNoise(ofGetElapsedTimef()*0.5), ofNoise(ofGetElapsedTimef()*0.2), ofNoise(ofGetElapsedTimef()*0.5)), ofVec3f(0, 0, 0));
@@ -105,7 +105,7 @@ void ofApp::draw() {
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key) {
+void ofApp::keyPressed(int key){
 	switch (key) {
 	case 'c': {
 		mCam.reset();
@@ -148,7 +148,7 @@ void ofApp::keyPressed(int key) {
 		if (chess_man.m_step>1) {
 			int disappear_chess(-1), show_chess(-1);
 			bool color;
-			if (!chess_man.back(disappear_chess, show_chess, color)) {	//??????
+			if (!chess_man.back(disappear_chess, show_chess,color)) {	//下棋模式
 
 
 				if (disappear_chess != -1 && show_chess != -1) {
@@ -156,11 +156,11 @@ void ofApp::keyPressed(int key) {
 					pre_chess = teni2eighti(show_chess);
 				}
 			}
-			else {	//??????
+			else {	//移棋模式
 				curr_board[teni2eighti(disappear_chess)] = 0;
+				
 
-
-				curr_board[teni2eighti(show_chess)] = !color + 1;
+				curr_board[teni2eighti(show_chess)] = !color+1;
 				pre_chess = teni2eighti(show_chess);
 
 
@@ -177,7 +177,7 @@ void ofApp::keyPressed(int key) {
 		}
 
 
-		else {
+		else if(chess_man.m_step==1) {
 			int disappear_chess(-1), show_chess(-1);
 			bool color;
 			chess_man.back(disappear_chess, show_chess, color);
@@ -207,12 +207,12 @@ void ofApp::keyPressed(int key) {
 		tail_4 = -1;
 		success_path.clear();
 
-		chess_man.restart();
+	   chess_man.restart();
 
-		//	chess_man.restart_v2(); test by dyy
+	//	chess_man.restart_v2(); test by dyy
 
 
-		//	chess_man.init();
+	//	chess_man.init();
 		//ofClear(ofColor(255, 0, 0));
 		break;
 	}
@@ -220,12 +220,12 @@ void ofApp::keyPressed(int key) {
 }
 
 //--------------------------------------------------------------
-void ofApp::keyReleased(int key) {
+void ofApp::keyReleased(int key){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y) {
+void ofApp::mouseMoved(int x, int y ){
 	if (curr_mode == MOVE && is_selected) {
 		int temp = xytoi(x, y);
 		if (temp >= 0 && temp < 64)moving_chess = temp;
@@ -233,12 +233,12 @@ void ofApp::mouseMoved(int x, int y) {
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button) {
+void ofApp::mouseDragged(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button) {
+void ofApp::mousePressed(int x, int y, int button){
 	if (button == OF_MOUSE_BUTTON_LEFT) {
 		switch (curr_mode) {
 		case FREE: {
@@ -258,7 +258,7 @@ void ofApp::mousePressed(int x, int y, int button) {
 				int after_chess = xytoi(x, y);
 				int real_x(x), real_y(y);
 				screen2board(real_x, real_y);
-				if (chess_man.move(select_chess % 8 + 1, select_chess / 8 + 1, after_chess % 8 + 1, after_chess / 8 + 1)) {
+				if (chess_man.move(select_chess % 8+1, select_chess / 8+1, after_chess % 8+1, after_chess / 8+1)) {
 					if (chess_man.m_step % 2) {
 						++chess_man.m_step;//test
 						curr_board[after_chess] = 1;
@@ -330,32 +330,32 @@ void ofApp::mousePressed(int x, int y, int button) {
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button) {
+void ofApp::mouseReleased(int x, int y, int button){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y) {
+void ofApp::mouseEntered(int x, int y){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y) {
+void ofApp::mouseExited(int x, int y){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::windowResized(int w, int h) {
+void ofApp::windowResized(int w, int h){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg) {
+void ofApp::gotMessage(ofMessage msg){
 
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo) {
+void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
 
@@ -436,7 +436,7 @@ void ofApp::drawBoard(vector<int>& now) {
 	}
 	if (curr_mode == MOVE) {
 		ofSetColor(255, 0, 0);
-		if (select_chess >= 0 && select_chess<64)ofDrawCircle(chess[select_chess].getPosition(), 40);
+		if(select_chess >= 0 && select_chess<64)ofDrawCircle(chess[select_chess].getPosition(), 40);
 		ofSetColor(255);
 		if (moving_chess >= 0 && moving_chess < 64) {
 			if (white_moving && curr_board[moving_chess] == 0) {
@@ -535,7 +535,7 @@ void ofApp::step(int x, int y) {
 			if (chess_man.m_doubly_link[real_x][real_y][1].m_pioneer != NULL && chess_man.m_doubly_link[real_x][real_y][1].m_pioneer->m_pos != 0)head_2 = teni2eighti(chess_man.m_doubly_link[real_x][real_y][1].m_pioneer->m_pos);
 			if (chess_man.m_doubly_link[real_x][real_y][2].m_pioneer != NULL && chess_man.m_doubly_link[real_x][real_y][2].m_pioneer->m_pos != 0)head_3 = teni2eighti(chess_man.m_doubly_link[real_x][real_y][2].m_pioneer->m_pos);
 			if (chess_man.m_doubly_link[real_x][real_y][3].m_pioneer != NULL && chess_man.m_doubly_link[real_x][real_y][3].m_pioneer->m_pos != 0)head_4 = teni2eighti(chess_man.m_doubly_link[real_x][real_y][3].m_pioneer->m_pos);
-
+			
 			if (chess_man.m_doubly_link[real_x][real_y][0].m_next != NULL)tail_1 = teni2eighti(chess_man.m_doubly_link[real_x][real_y][0].m_next->m_pos);
 			if (chess_man.m_doubly_link[real_x][real_y][1].m_next != NULL)tail_2 = teni2eighti(chess_man.m_doubly_link[real_x][real_y][1].m_next->m_pos);
 			if (chess_man.m_doubly_link[real_x][real_y][2].m_next != NULL)tail_3 = teni2eighti(chess_man.m_doubly_link[real_x][real_y][2].m_next->m_pos);
@@ -543,7 +543,7 @@ void ofApp::step(int x, int y) {
 			curr_board[i] = 1;
 			pre_chess = i;
 		}
-		//if (chess_man.feasible(0, real_x, real_y)) { //?ж?????????????
+		//if (chess_man.feasible(0, real_x, real_y)) { //判断是否能下的条件
 		//	++chess_man.m_step;//test
 		//	curr_board[i] = 1;
 		//	chess_man.add(real_x, real_y);
@@ -575,7 +575,7 @@ void ofApp::step(int x, int y) {
 			curr_board[i] = 2;
 			pre_chess = i;
 		}
-		//if (chess_man.feasible(1, real_x, real_y)) {  //?ж?????????????
+		//if (chess_man.feasible(1, real_x, real_y)) {  //判断是否能下的条件
 		//	++chess_man.m_step;//test
 		//	curr_board[i] = 2;
 		//	chess_man.add(real_x, real_y);
@@ -589,7 +589,7 @@ void ofApp::move_step(int x, int y) {
 	unsigned i(xytoi(x, y));
 	if (i < 0 || i >= 64)return;
 	if ((chess_man.m_step % 2) == 0) {
-		if (curr_board[i] == 0) { //?ж?????????????
+		if (curr_board[i] == 0) { //判断是否能下的条件
 			++chess_man.m_step;//test
 			curr_board[i] = 2;
 			curr_board[select_chess] = 0;
@@ -601,8 +601,8 @@ void ofApp::move_step(int x, int y) {
 
 	}
 	else {
-		if (curr_board[i] == 0) {  //?ж?????????????
-								   //++chess_man.m_step;//test
+		if (curr_board[i] == 0) {  //判断是否能下的条件
+			//++chess_man.m_step;//test
 			curr_board[i] = 1;
 			curr_board[select_chess] = 0;
 			moving_chess = -1;
@@ -619,7 +619,7 @@ int ofApp::select(int x, int y) {
 	if (i < 0 || i >= 64)return -1;
 	else {
 		if (((chess_man.m_step % 2) == 0 && curr_board[i] == 2) || ((chess_man.m_step % 2) == 1 && curr_board[i] == 1) || curr_board[i] == 0)return -1;
-
+		
 		if (curr_board[i] == 1)white_moving = true;
 		else if (curr_board[i] == 2)white_moving = false;
 		is_selected = true;
@@ -681,7 +681,7 @@ void ofApp::drawHand() {
 						skin.bind();
 						human_hand.setPosition(chess[i].getPosition().x, chess[i].getPosition().y, chess[i].getPosition().z);
 						human_hand.drawFaces();
-
+						
 						human_hand_sub.setPosition(-board.getWidth() / 2 + board.getWidth() / 16 + 8 * board.getWidth() / 8, board.getHeight() / 2 - board.getHeight() / 16 - 1.5 * board.getHeight() / 8, 12);
 						human_hand_sub.drawFaces();
 						skin.unbind();
@@ -690,7 +690,7 @@ void ofApp::drawHand() {
 						skin.bind();
 						human_hand_sub.setPosition(chess[i].getPosition().x, chess[i].getPosition().y, chess[i].getPosition().z);
 						human_hand_sub.drawFaces();
-
+						
 						human_hand.setPosition(-board.getWidth() / 2 + board.getWidth() / 16 + 8 * board.getWidth() / 8, board.getHeight() / 2 - board.getHeight() / 16 - 5.5 * board.getHeight() / 8, 12);
 						human_hand.drawFaces();
 						skin.unbind();
@@ -701,7 +701,7 @@ void ofApp::drawHand() {
 						skin.bind();
 						human_hand_sub.setPosition(chess[i].getPosition().x, chess[i].getPosition().y, chess[i].getPosition().z);
 						human_hand_sub.drawFaces();
-
+						
 						human_hand.setPosition(-board.getWidth() / 2 + board.getWidth() / 16 + 8 * board.getWidth() / 8, board.getHeight() / 2 - board.getHeight() / 16 - 5.5 * board.getHeight() / 8, 12);
 						human_hand.drawFaces();
 						skin.unbind();
@@ -710,7 +710,7 @@ void ofApp::drawHand() {
 						skin.bind();
 						human_hand.setPosition(chess[i].getPosition().x, chess[i].getPosition().y, chess[i].getPosition().z);
 						human_hand.drawFaces();
-
+						
 						human_hand_sub.setPosition(-board.getWidth() / 2 + board.getWidth() / 16 + 8 * board.getWidth() / 8, board.getHeight() / 2 - board.getHeight() / 16 - 1.5 * board.getHeight() / 8, 12);
 						human_hand_sub.drawFaces();
 						skin.unbind();
@@ -771,12 +771,12 @@ void ofApp::setguitab() {
 	startmenu->autoSizeToFitWidgets();
 	ofxUILabelToggle* s = new ofxUILabelToggle("Start", false, 0, 0, 0, 0, OFX_UI_FONT_LARGE);
 	s->setDrawBack(false);
-	ofxUILabel* e = new ofxUILabel("ver 1.0", OFX_UI_FONT_MEDIUM);
+	ofxUILabel* e = new ofxUILabel("ver 1.0",OFX_UI_FONT_MEDIUM);
 	e->setDrawBack(false);
-	startmenu->addLabel("????????????????????", OFX_UI_FONT_SMALL);
+	startmenu->addLabel("——————————", OFX_UI_FONT_SMALL);
 	startmenu->addWidgetDown(s, OFX_UI_ALIGN_CENTER);
 	startmenu->addWidgetDown(e, OFX_UI_ALIGN_BOTTOM);
-	startmenu->setPosition(100, 200);
+	startmenu->setPosition(100,200);
 	startmenu->autoSizeToFitWidgets();
 	ofAddListener(startmenu->newGUIEvent, this, &ofApp::guiEvent);
 

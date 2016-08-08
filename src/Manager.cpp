@@ -14,13 +14,11 @@ void Manager::init_link()
 
 
 
-	//初始化棋盘每个棋子的结点
+
 
 	memset(m_doubly_link, 0, sizeof(m_doubly_link));
 
 
-
-	// 初始化每个结点对应在棋盘的位置
 
 	for (int x = 1; x <= m_n; x++)
 	{
@@ -35,28 +33,26 @@ void Manager::init_link()
 	}
 
 
-
-
-
-	// 初始化棋盘每个位置的4个方向链表的头结点，时间复杂度O(m_size*m_size*4)
-
-	// direction 表示链表的增加方向 x ,y 表示链表起始位置，也就是空头结点的位置，增加一个空的头结点，方便插入和删除结点
-
-
-	// direction 具体如下 	int next_step[m_direction][2] = { {-1,1},{0,1},{1,1},{1,0},{-1,0},{-1,-1},{0,-1},{1,-1}};
-
-
 	int x, y, direction;
+
+	//// init x=1;
+
+	//int direction = 1;
+	//int x = 1, y = 1;
+	//int count = 1;
+
+	//init_line_head(x, y, direction);
+
+
+
 
 	x = 0;
 	for (int i = 0; i <m_size; i++)
 	{
-		// init   y= i  0<x<=m_n
+		// init   y= i 
 		y = i;
 		direction = 3;
 		init_line_head(x, y, direction);
-
-		// init  　y-x=i  (1<=y<=m_n,1<=x<=m_n)
 		direction = 2;
 		init_line_head(x, y, direction);
 
@@ -67,17 +63,12 @@ void Manager::init_link()
 
 	for (int i = 0; i < m_size; i++)
 	{
-		// init x+y=i; （1<=y<=m_n,1<=x<=m_n）
+		// init x=i;
 		x = i;
 		direction = 0;
 		init_line_head(x, y, direction);
-
-
-		// init x=i; （1<=y<=m_n）
 		direction = 1;
 		init_line_head(x, y, direction);
-
-		// init x-y=i; （1<=y<=m_n,1<=x<=m_n）
 		direction = 2;
 		init_line_head(x, y, direction);
 
@@ -90,8 +81,6 @@ void Manager::init_link()
 	direction = 0;
 	for (int i = 0; i <m_size; i++)
 	{
-
-		// init x+y=m_n+1+i   （1<=y<=m_n,1<=x<=m_n）
 		y = i;
 		init_line_head(x, y, direction);
 
@@ -104,17 +93,15 @@ void Manager::init_link()
 
 void Manager::init_line_head(int x, int y, int direction)// O(m_n/2) =O(4)
 {
-
-
-	int count = 0;// 记录是第几个结点
-
-				  // 由于棋盘扩大了，把周边没有用的结点作为一些链表的空头结点，增加结点的利用率 ， 不用NEW  DELETE 结点，方便初始化
-
+	int count = 0;
 
 	node* head = &m_doubly_link[x][y][direction];
 
+	////delete m_head[x][y][direction];
+	//m_head[x][y][direction] = head;
+	//m_doubly_link[x][y][direction].m_index = count;
 	while (1) {
-		//根据方向数组，计算链表的下一个结点的位置，
+		//x++;
 		x += next_step[direction][0];
 		y += next_step[direction][1];
 		if (judge_border(x, y)) {
@@ -129,6 +116,10 @@ void Manager::init_line_head(int x, int y, int direction)// O(m_n/2) =O(4)
 
 void Manager::init()
 {
+	//memset(m_situation, 0, sizeof(m_situation));
+	//memset(m_limit, 0, sizeof(m_limit));
+	//
+	//m_situation[1][1] = m_situation[1][m_n] = m_situation[m_n][1] =m_situation[m_n][m_n]= m_inf;//设置禁区
 
 
 
@@ -144,28 +135,21 @@ void Manager::init()
 		//白棋连通上下 即y->(1,m_n) 黑棋连通左右  x->(1,m_n)
 
 		// 所以白棋不能走 y=1 (1<=x<=m_n) 和 y=m_n(1<=x<=m_n)
-		m_limit[1][1][i] = m_limit[1][m_n][i] = m_limit[0][i][1] = m_limit[0][i][m_n] = m_inf;
-
+		m_limit[1][1][i] = m_limit[1][m_n][i]=m_limit[0][i][1] = m_limit[0][i][m_n] = m_inf;
+		
 		//黑棋不能走上下两行，为白棋的特区
 
 	}
 
 	m_situation[1][1] = m_situation[1][m_n] = m_situation[m_n][1] = m_situation[m_n][m_n] = m_inf;//设置禁区
 
-
-																								  //// by dyy at 8 7 9:38
-
-																								  //m_limit[0][1][1] = m_limit[0][1][m_n] = m_limit[0][m_n][1] = m_limit[0][m_n][m_n]
-																								  //	= m_limit[1][1][1] = m_limit[1][1][m_n] = m_limit[1][m_n][1] = m_limit[1][m_n][m_n] = m_inf;
-
-
-
+	
+	
+	
 }
-
 
 void Manager::lay_limit(int color,int x,int y)
 {
-	// 便于群的判断， 放下一个棋子，就在它的周围limit 数组+1 ，它自己的位置加上一个特殊值 m_inf2
 
 	int near_x, near_y;
 	for (int i = 0; i < m_direction; i++)
@@ -176,20 +160,11 @@ void Manager::lay_limit(int color,int x,int y)
 		m_limit[color][near_x][near_y]++;
 	}
 
-
-	
-   // m_limit[color][x][y]++;
-
-	m_limit[color][x][y] += m_inf2;
-	
+	m_limit[color][x][y]++;
 }
 
 void Manager::retract_limit(int color,int x,int y)
 {
-
-
-	// 便于群的判断， 收回一个棋子，就在它的周围limit 数组-1 它自己的位置减去一个特殊值 m_inf2
-
 	int near_x, near_y;
 	for (int i = 0; i < m_direction; i++)
 	{
@@ -199,8 +174,7 @@ void Manager::retract_limit(int color,int x,int y)
 		m_limit[color][near_x][near_y]--;
 	}
 
-	//m_limit[color][x][y]--;
-	m_limit[color][x][y] -= m_inf2;
+	m_limit[color][x][y]--;
 }
 
 
@@ -210,16 +184,12 @@ void Manager::restart()
 	init();
 	m_step = 0;
 
-
-	// 重新开始，清空m_before
 	while (!m_before[0].empty())m_before[0].pop();
-
+	
 	while (!m_before[1].empty())m_before[1].pop();
 
 
 
-
-	// 初始化 m_doubly_link  m_head
 	for (int x = 1; x <= m_n; x++)
 	{
 		for (int y = 1; y <= m_n; y++)
@@ -276,7 +246,7 @@ bool Manager::feasible(int color,int x,int y)
 	if (!judge_border(x, y) || m_situation[x][y] || m_limit[color][x][y]>=m_inf)return 0;
 	
 	//附近有2个棋子
-	if (m_limit[color][x][y]>= 2)return 0;
+	if (m_limit[color][x][y] == 2)return 0;
 
 	int count = 0;//记录周围有几个同色棋子
 
@@ -285,11 +255,7 @@ bool Manager::feasible(int color,int x,int y)
 	{
 		near_x = x + next_step[i][0];
 		near_y = y + next_step[i][1];
-		//if (m_situation[near_x][near_y] > 0 && m_situation[near_x][near_y] < m_inf&&m_situation[near_x][near_y] % 2 == color&&m_limit[color][near_x][near_y] == 2)return 0;
-		
-		// change by dyy at 8 7 10:36
-		if (m_limit[color][near_x][near_y] ==m_inf2+1)return 0;
-
+		if (m_situation[near_x][near_y] > 0 && m_situation[near_x][near_y] < m_inf&&m_situation[near_x][near_y] % 2 == color&&m_limit[color][near_x][near_y] == 2)return 0;
 	}
 	return 1;
 
@@ -301,11 +267,7 @@ bool Manager::add(int x, int y)
 	m_step++;
 
 
-
-	
-	
-
-	if (lay((m_chess_num+1) % 2, x, y)) {
+	if (lay(m_step % 2, x, y)) {
 		
 
 
@@ -317,11 +279,15 @@ bool Manager::add(int x, int y)
 		m_situation[x][y] = m_chess_num;
 
 
-		// test by dyy 8 7 14:33
-		int color = m_step % 2;
-		cout << "add" << "(" << x << "," << y << ")" << endl;
-		cout << "color" << color << endl;
 
+		//if (m_step % 2&&x==1) {//黑棋，起始点  x=1
+		//	m_begin[m_step % 2].push_back(y);
+		//}
+		//else {// 白棋，起始点是y=1
+		//	m_begin[m_step & 0x01].push_back(x);
+
+		//}
+		//m_begin[m_step%2]=
 
 		return 1;
 	}
@@ -370,24 +336,13 @@ bool Manager::move(int before_x, int before_y, int after_x, int after_y)
 
 
 		retract(pos % 2, before_x, before_y);
-
-
-
-
-
-
 		if (lay(pos % 2, after_x, after_y)) {
 			m_chess[pos]= after_x+after_y*m_size;
 		//	m_chess[pos][1] = after_y;
 			m_before[0].push(after_x+ m_size*after_y);
 			m_before[1].push(before_x+m_size*before_y);
 			m_situation[after_x][after_y] = pos;
-			// test by dyy
-			int color = pos % 2;
-
-			cout << "(" << before_x << "," << before_y << ")" << "move" << "(" << after_x << "," << after_y << ")" << endl;
-			cout << "color" << color << endl;
-
+			
 			return 1;
 		}
 		else {
@@ -425,9 +380,7 @@ bool Manager::back(int & p1,int & p2,bool & color)
 	int pos = m_situation[current_x][current_y];
 	retract(pos%2, current_x, current_y);
 	
-
 	color = pos % 2;
-	cout << "color" << color << endl;
 
 	if (chesspos) {
 		int before_x(m_before[1].top() % m_size), before_y(m_before[1].top() / m_size);
@@ -441,23 +394,15 @@ bool Manager::back(int & p1,int & p2,bool & color)
 		p2 = m_before[1].top();
 		m_before[0].pop();
 		m_before[1].pop();
-
-
-
-		//test
-		cout << "back" << "(" << current_x << "," << current_y << ")" <<"  "<< "(" <<before_x<< ","<<before_y<< ")" << endl;
-		//cout << "back" << p1 << "  " << p2 << endl;
 	}
 
 	else {
 
-		
+
 		p1 = m_before[0].top();
 		p2 = m_before[1].top();
 		m_before[0].pop();
 		m_before[1].pop();
-		//test
-		cout << "back" <<"("<<current_x<<","<<current_y<<")" <<"("<<","<<")"<< endl;
 
 
 		if(!m_before[0].empty())
@@ -470,11 +415,6 @@ bool Manager::back(int & p1,int & p2,bool & color)
 		m_chess_num--;
 
 	}
-
-
-
-
-
 	return chesspos;
 }
 
